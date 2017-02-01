@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>拖拽元素</title>
+    <style>
+        #div1{ position: absolute; left: 0; top: 0; width: 100px; height: 100px; background-color: red;}
+    </style>
+    <script>
+        window.onload = function () {
+            var oDiv = document.getElementById('div1');
+            drag(oDiv);
+           function drag(obj) {
+               obj.onmousedown = function (ev) {
+                   var e = ev|| event;
+                   var x = e.clientX -oDiv.offsetLeft;
+                   var y = e.clientY -oDiv.offsetTop;
+                   document.onmousemove = function (ev) {  //这里将oDiv 改为document是为了防止鼠标移出div外
+                       var e =ev||event;
+                       var L =e.clientX-x;
+                       var T = e.clientY -y;
+                       if(L<100){
+                           L=0;
+                       }else if(L>document.documentElement.clientWidth){
+                           L= document.documentElement.clientWidth- obj.offsetWidth;
+
+                       }
+                        if(T<100){
+                            T=0;
+                        }else if (T>document.documentElement.clientHeight){
+                            T =document.documentElement.clientHeight-obj.offsetHeight;
+                        }
+
+                       obj.style.left = L+'px';
+                       obj.style.top = T+'px';
+
+                   };
+                   document.onmouseup = function () {   //这里将oDiv 改为document是为了防止鼠标移出div外，运用冒泡机制
+                       document.onmousedown = document.onmousemove = null;
+
+
+                   }
+               };
+
+           }
+        }
+    </script>
+</head>
+<body>
+    <div id="div1"></div>
+</body>
+</html>
